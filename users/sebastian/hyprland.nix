@@ -12,10 +12,7 @@
 
   home.hyprdynamicmonitors = {
     enable = true;
-  };
-
-  services.hyprlauncher = {
-    enable = true;
+    installExamples = false;
   };
 
   services.hyprpolkitagent.enable = true;
@@ -143,7 +140,7 @@
         
         # Launch things
         "SUPER, T, exec, kitty"
-        "CONTROL, space, exec, hyprlauncher"
+        "CONTROL, space, exec, tofi-drun --drun-launch=true"
         "SUPER, X, killactive,"
         "SUPER SHIFT, X, forcekillactive,"
 
@@ -196,7 +193,7 @@
       ];
     };
     extraConfig = ''
-      # source = $HOME/.config/hypr/monitors.conf
+      source = $HOME/.config/hypr/monitors.conf
     '';
   };
 }

@@ -46,6 +46,12 @@
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
         };
+        # Karakeep
+        "karakeep@karakeep.com" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/karakeep/latest.xpi";
+          installation_mode = "force_installed";
+          default_area = "navbar"; # This "pins" it to the main toolbar
+        };
       };
     };
   };
