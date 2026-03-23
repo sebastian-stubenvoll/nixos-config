@@ -1,41 +1,22 @@
-{ config, pkgs, ... }:
+{ config, pkgs, inputs, ... }:
 
 {
-  services.hyprlauncher = {
+  imports = [
+    inputs.hyprdynamicmonitors.homeManagerModules.default
+  ];
+
+  home.packages = with pkgs; [
+    hyprdynamicmonitors
+    hyprtoolkit
+  ];
+
+  home.hyprdynamicmonitors = {
     enable = true;
   };
 
-  xdg.configFile."hypr/hyprtoolkit.conf".text = ''
-    # --- General Layout ---
-    # Set to 0 for sharp corners
-    rounding = 0
-    border_size = 2
-    
-    # --- OneDark Color Palette ---
-    # Format: rgba(RRGGBBAA) or hex
-    
-    # Window Background (Dark Grey)
-    bg_color = rgba(282c34ff)
-    
-    # Border Color (Cyan/Blueish)
-    border_color = rgba(61afefff)
-    
-    # Search Input Text (White/Silver)
-    text_color = rgba(abb2bfff)
-    
-    # Selection/Highlight (Green)
-    selection_color = rgba(98c379ff)
-    
-    # Unselected Item Text
-    item_text_color = rgba(abb2bfff)
-    
-    # Selected Item Text (Darker for contrast against green)
-    item_selected_text_color = rgba(282c34ff)
-
-    # --- Font Settings ---
-    font_family = Sans
-    font_size = 14
-  '';
+  services.hyprlauncher = {
+    enable = true;
+  };
 
   services.hyprpolkitagent.enable = true;
 
@@ -53,9 +34,6 @@
     };
   };
 
-  home.packages = with pkgs; [
-    hyprdynamicmonitors
-  ];
   
   home.pointerCursor = {
     gtk.enable = true;
@@ -64,10 +42,9 @@
     size = 20;
   };
 
-  home.file."Screenshots/.keep".text = "";
   programs.hyprshot = {
     enable = true;
-    saveLocation = "$HOME/Screenshots";
+    saveLocation = "${config.home.homeDirectory}/Screenshots";
   };
 
   wayland.windowManager.hyprland = {
@@ -106,7 +83,6 @@
         "SUPER, f3, workspace, 3"
         "SUPER, f4, workspace, 4"
         "SUPER, f5, workspace, 5"
-        "SUPER, f5, workspace, 5"
         "SUPER, f6, workspace, 6"
         "SUPER, f7, workspace, 7"
         "SUPER, f8, workspace, 8"
@@ -116,7 +92,6 @@
         "SUPER SHIFT, f2, movetoworkspace, 2"
         "SUPER SHIFT, f3, movetoworkspace, 3"
         "SUPER SHIFT, f4, movetoworkspace, 4"
-        "SUPER SHIFT, f5, movetoworkspace, 5"
         "SUPER SHIFT, f5, movetoworkspace, 5"
         "SUPER SHIFT, f6, movetoworkspace, 6"
         "SUPER SHIFT, f7, movetoworkspace, 7"
@@ -129,7 +104,6 @@
         "SUPER, 3, workspace, 3"
         "SUPER, 4, workspace, 4"
         "SUPER, 5, workspace, 5"
-        "SUPER, 5, workspace, 5"
         "SUPER, 6, workspace, 6"
         "SUPER, 7, workspace, 7"
         "SUPER, 8, workspace, 8"
@@ -139,7 +113,6 @@
         "SUPER SHIFT, 2, movetoworkspace, 2"
         "SUPER SHIFT, 3, movetoworkspace, 3"
         "SUPER SHIFT, 4, movetoworkspace, 4"
-        "SUPER SHIFT, 5, movetoworkspace, 5"
         "SUPER SHIFT, 5, movetoworkspace, 5"
         "SUPER SHIFT, 6, movetoworkspace, 6"
         "SUPER SHIFT, 7, movetoworkspace, 7"
@@ -157,20 +130,31 @@
         # Resizing
         "SUPER, R, submap, resize"
 
+        # Disable
+        "SUPER SHIFT, D, submap, disable"
+
         # Floating toggle
         "SUPER, F, togglefloating, active"
         "SUPER SHIFT, F, setfloating, active"
         "SUPER SHIFT, F, pin, active"
 
+        # Fullscreen
+        "SUPER SHIFT, M, fullscreen, 0 toggle"
+        
         # Launch things
         "SUPER, T, exec, kitty"
         "CONTROL, space, exec, hyprlauncher"
         "SUPER, X, killactive,"
+        "SUPER SHIFT, X, forcekillactive,"
 
         # Screenshot
-        "SUPER, S, exec, hyprshot -m region --clipoard-only"
-        "SUPER SHIFT, S, exec, hyprshot -m region"
+        "SUPER, S, exec, hyprshot -m region --clipboard-only"
+        "SUPER SHIFT, S, exec, hyprshot -m region -o '${builtins.toString config.programs.hyprshot.saveLocation}'"
         "SUPER CONTROL SHIFT, S, exec, hyprshot -m monitor"
+      ];
+
+      windowrule = [
+        "match:content 3, fullscreen on"
       ];
 
       input = {
@@ -182,6 +166,7 @@
         touchpad = {
           tap-to-click = false;
           natural_scroll = true;
+          clickfinger_behavior = true;
         };
       };
       exec-once = [
@@ -205,8 +190,13 @@
         ", l, resizeactive, 10 0"
       ];
     };
+    submaps."disable".settings = {
+      bind = [
+        "SUPER SHIFT, D, submap, reset"  
+      ];
+    };
     extraConfig = ''
-      source = $HOME/.config/hypr/monitors.conf
+      # source = $HOME/.config/hypr/monitors.conf
     '';
   };
 }

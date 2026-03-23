@@ -12,5 +12,5 @@
   services.udev.extraRules = ''
   # Create a symlink so hyprdynamicmonitors finds the power line
   SUBSYSTEM=="power_supply", KERNEL=="ADP1", SYMLINK+="line_power_ACAD"
-# '';
+ '';
  }

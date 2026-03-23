@@ -17,7 +17,7 @@ in
    hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation (final: {
       name = "brcm-firmware";
-      src = ../../firmware/brcm;
+      src = /. + "etc/nixos/firmware/brcm";
       installPhase = ''
         mkdir -p $out/lib/firmware/brcm
         cp ${final.src}/* "$out/lib/firmware/brcm"
@@ -61,11 +61,9 @@ in
     options = "caps:escape";
   };
 
-  # services.pulseaudio.enable = true;
-
   users.users.sebastian = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "storage" ]; # Enable ‘sudo’ for the user.
   };
 
   environment.systemPackages = with pkgs; [
@@ -78,6 +76,8 @@ in
     mesa
     vulkan-tools
     htop
+    geteduroam
+    geteduroam-cli
   ];
 
   programs.regreet = {
@@ -89,6 +89,8 @@ in
     withUWSM = true;
     xwayland.enable = true;
   };
+
+  # this is actually terrible
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";
   
   programs.mtr.enable = true;
