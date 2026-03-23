@@ -25,6 +25,7 @@ in
     }))
   ];
 
+  networking.firewall.enable = true;
   networking.networkmanager = {
     enable = true;
     wifi.backend = "iwd";
@@ -80,7 +81,7 @@ in
     geteduroam-cli
   ];
 
-  programs.regreet = {
+  services.displayManager.ly = {
     enable = true;
   };
 

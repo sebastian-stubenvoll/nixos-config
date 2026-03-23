@@ -7,6 +7,7 @@
     handleLidSwitch = "suspend";          # normal laptop behavior
     handleLidSwitchExternalPower = "suspend";
     handleLidSwitchDocked = "ignore";     # ignore lid when docked
+    handlePowerKey = "suspend";
   };
 
   services.udev.extraRules = ''

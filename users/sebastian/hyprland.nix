@@ -130,6 +130,9 @@
         # Disable
         "SUPER SHIFT, D, submap, disable"
 
+        # Lock
+        "SUPER SHIFT CONTROL, D, exec, hyprlock"
+
         # Floating toggle
         "SUPER, F, togglefloating, active"
         "SUPER SHIFT, F, setfloating, active"
@@ -196,4 +199,84 @@
       source = $HOME/.config/hypr/monitors.conf
     '';
   };
+
+  programs.hyprlock = {
+    enable = true;
+
+    settings = {
+      general = {
+        disable_loading_bar = true;
+        grace = 300;
+        hide_cursor = true;
+        no_fade_in = false;
+      };
+
+      background = [
+        {
+          path = "/home/sebastian/wallpaper.jpg";
+          blur_passes = 2;
+          blur_size = 8;
+        }
+      ];
+
+      input-field = [
+        {
+          size = "300, 50";
+          position = "0, -80";
+          monitor = "";
+          dots_center = true;
+          fade_on_empty = false;
+          font_color = "rgb(200, 200, 200)";
+          inner_color = "rgb(30, 30, 30)";
+          outer_color = "rgb(80, 80, 80)";
+          outline_thickness = 2;
+          placeholder_text = "Password...";
+          shadow_passes = 1;
+        }
+      ];
+
+      label = [
+        {
+          text = "$TIME";
+          font_size = 64;
+          position = "0, 80";
+          halign = "center";
+          valign = "center";
+        }
+
+        {
+          text = "Hi $USER";
+          font_size = 20;
+          position = "0, 30";
+          halign = "center";
+          valign = "center";
+        }
+      ];
+    };
+  };
+
+  services.hypridle = {
+    enable = true;
+
+    settings = {
+      general = {
+        lock_cmd = "pidof hyprlock || hyprlock";
+        before_sleep_cmd = "loginctl lock-session";
+        after_sleep_cmd = "hyprctl dispatch dpms on";
+      };
+
+      listener = [
+        {
+          timeout = 300;
+          on-timeout = "hyprlock";
+        }
+
+        {
+          timeout = 600;
+          on-timeout = "systemctl suspend";
+        }
+      ];
+    };
+  };
+
 }
