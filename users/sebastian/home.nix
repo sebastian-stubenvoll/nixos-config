@@ -7,6 +7,8 @@
   programs.home-manager.enable = true;
   home.stateVersion = "24.05";
 
+  programs.bash.enable = true;
+
   home.packages = with pkgs; [
     fastfetch
     
@@ -27,8 +29,8 @@
     enable = true;
     prefix = "C-a";
     extraConfig = ''
-      bind u split-window -h   # horizontal split (side by side)
-      bind i split-window -v   # vertical split (top/bottom)
+      bind i split-window -h   # horizontal split (side by side)
+      bind u split-window -v   # vertical split (top/bottom)
     '';    
   };
 }
