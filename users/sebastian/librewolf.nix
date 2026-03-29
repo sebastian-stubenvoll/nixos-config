@@ -32,7 +32,7 @@
           default_area = "menupanel";
         };
         # Privacy Badger
-        "jid1-Mnnjssqs6w9chw@jetpack" = {
+        "privacybadger@eff.org" = {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/privacy-badger/latest.xpi";
         };
@@ -42,23 +42,76 @@
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/bitwarden-password-manager/latest.xpi";
         };
         # Tabliss - New Tab Page
-        "{7d27e738-2067-4ca2-9ad3-ca3fdc81acfd}" = {
+        "extension@tabliss.io" = {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/tabliss/latest.xpi";
         };
         # Karakeep
-        "karakeep@karakeep.com" = {
+        "addon@karakeep.app" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/karakeep/latest.xpi";
           installation_mode = "force_installed";
           default_area = "navbar";
         };
         # Vimium
-        "vimium@vimium.github.io" = {
+        "{d7742d87-e61d-4b78-b8a1-b469842139fa}" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium/latest.xpi";
           installation_mode = "force_installed";
           default_area = "menupanel";
         };
+        # Zotero connector
+        "zotero@chnm.gmu.edu" = {
+          installation_mode = "force_installed";
+          install_url = "https://download.zotero.org/connector/firefox/release/Zotero_Connector-5.0.199.xpi";
+          default_area = "navbar";
+        };
       };
+    };
+  };
+
+  systemd.user.services.zotero-symlinks = {
+    Unit = {
+      Description = "Ensure Zotero PDF tool symlinks exist";
+    };
+
+    Service = {
+      Type = "oneshot";
+      ExecStart = toString (pkgs.writeShellScript "zotero-symlinks" ''
+        set -euo pipefail
+
+        profile=$(ls "$HOME/.mozilla/firefox" 2>/dev/null | grep '\.default' | head -n1 || true)
+
+        if [ -z "$profile" ]; then
+          echo "No Firefox/LibreWolf profile found"
+          exit 0
+        fi
+
+        dir="$HOME/.mozilla/firefox/$profile/zotero"
+        mkdir -p "$dir"
+
+        ln -sf /run/current-system/sw/bin/pdftotext \
+          "$dir/pdftotext-Linux-x86_64"
+
+        ln -sf /run/current-system/sw/bin/pdfinfo \
+          "$dir/pdfinfo-Linux-x86_64"
+
+        echo "Zotero symlinks ensured for profile: $profile"
+      '');
+    };
+  };
+
+  systemd.user.timers.zotero-symlinks = {
+    Unit = {
+      Description = "Periodically ensure Zotero symlinks exist";
+    };
+
+    Timer = {
+      OnBootSec = "5m";
+      OnUnitActiveSec = "10m";
+      Unit = "zotero-symlinks.service";
+    };
+
+    Install = {
+      WantedBy = [ "timers.target" ];
     };
   };
 }

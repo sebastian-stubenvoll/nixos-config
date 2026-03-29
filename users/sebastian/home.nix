@@ -20,6 +20,7 @@
     rapidraw
 
     typst
+    zotero
   ];
 
   programs.tmux = {
