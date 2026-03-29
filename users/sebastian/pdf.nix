@@ -56,9 +56,6 @@ in
       recolor-lightcolor    = onedark.bg;
       recolor-darkcolor     = onedark.fg;
 
-      recolor-highlight     = true;
-      recolor-highlight-color = onedark.yellow;
-
       index-bg              = onedark.bg;
       index-fg              = onedark.fg;
       index-active-bg       = onedark.blue;
