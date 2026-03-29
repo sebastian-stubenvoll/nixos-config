@@ -8,6 +8,9 @@
   home.packages = with pkgs; [
     hyprdynamicmonitors
     hyprtoolkit
+    hyprpwcenter
+    hyprpwcenter
+    hyprshutdown
   ];
 
   home.hyprdynamicmonitors = {
@@ -162,7 +165,7 @@
         kb_variant = "mac";
         kb_options = "caps:escape,lv3:lalt_switch,compose:menu";
         repeat_delay = 250;
-        follow_mouse = 2;
+        follow_mouse = 0;
         touchpad = {
           tap-to-click = false;
           natural_scroll = true;
@@ -245,9 +248,9 @@
         }
 
         {
-          text = "Hi $USER";
+          text = "hello $USER";
           font_size = 20;
-          position = "0, 30";
+          position = "0, 10";
           halign = "center";
           valign = "center";
         }
@@ -269,11 +272,6 @@
         {
           timeout = 300;
           on-timeout = "hyprlock";
-        }
-
-        {
-          timeout = 600;
-          on-timeout = "systemctl suspend";
         }
       ];
     };

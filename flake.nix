@@ -1,13 +1,21 @@
 {
-  description = "Dynamic NixOS Flake with Recursive User Home Manager Modules";
+  description = "Dynamic NixOS Flake with User Home Manager Modules";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    nixpkgs25.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixos-hardware = {
+      type = "github";
+      owner = "NixOS";
+      repo = "nixos-hardware";
+      rev = "31f46de4ef6675a2a1eface29f7c4c9952f2498c";
+    };
     
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
     hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
   };
 

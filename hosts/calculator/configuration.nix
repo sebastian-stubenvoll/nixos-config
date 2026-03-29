@@ -1,18 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 
-let
-  nixosHardware = builtins.fetchGit {
-    url = "https://github.com/NixOS/nixos-hardware.git";
-    rev = "3966ce987e1a9a164205ac8259a5fe8a64528f72";
-  };
-in
 {
-  imports =
-    [ 
-      ./hardware-configuration.nix
-      "${nixosHardware}/apple/t2"
-    ];
-
+   imports = [
+     ./hardware-configuration.nix
+     inputs.nixos-hardware.nixosModules.apple-t2
+   ];
+  
 
    hardware.firmware = [
     (pkgs.stdenvNoCC.mkDerivation (final: {
@@ -45,6 +38,11 @@ in
 
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true;
+
+
+  systemd.targets.suspend.enable = false;
+  systemd.targets.hybrid-sleep.enable = false;
+  systemd.targets.sleep.enable = false;
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Europe/Amsterdam";

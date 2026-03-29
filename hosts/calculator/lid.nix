@@ -4,10 +4,10 @@
   services.upower.enable = true;
   
   services.logind.settings.Login = {
-    handleLidSwitch = "suspend";          # normal laptop behavior
-    handleLidSwitchExternalPower = "suspend";
+    handleLidSwitch = "hibernate";          # normal laptop behavior
+    handleLidSwitchExternalPower = "hibernate";
     handleLidSwitchDocked = "ignore";     # ignore lid when docked
-    handlePowerKey = "suspend";
+    handlePowerKey = "hibernate";
   };
 
   services.udev.extraRules = ''

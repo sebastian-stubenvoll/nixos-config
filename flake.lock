@@ -57,6 +57,22 @@
         "type": "github"
       }
     },
+    "nixos-hardware": {
+      "locked": {
+        "lastModified": 1769892755,
+        "narHash": "sha256-8OrvOWhSEVrtm/az+InHrSVYLymA/s4iMkMJ6rt195c=",
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "31f46de4ef6675a2a1eface29f7c4c9952f2498c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "repo": "nixos-hardware",
+        "rev": "31f46de4ef6675a2a1eface29f7c4c9952f2498c",
+        "type": "github"
+      }
+    },
     "nixpkgs": {
       "locked": {
         "lastModified": 1758690382,
@@ -69,6 +85,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "nixpkgs25": {
+      "locked": {
+        "lastModified": 1774244481,
+        "narHash": "sha256-4XfMXU0DjN83o6HWZoKG9PegCvKvIhNUnRUI19vzTcQ=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "4590696c8693fea477850fe379a01544293ca4e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-25.11",
         "repo": "nixpkgs",
         "type": "github"
       }
@@ -93,7 +125,9 @@
       "inputs": {
         "home-manager": "home-manager",
         "hyprdynamicmonitors": "hyprdynamicmonitors",
-        "nixpkgs": "nixpkgs_2"
+        "nixos-hardware": "nixos-hardware",
+        "nixpkgs": "nixpkgs_2",
+        "nixpkgs25": "nixpkgs25"
       }
     },
     "systems": {

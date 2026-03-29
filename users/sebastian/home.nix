@@ -21,4 +21,13 @@
 
     typst
   ];
+
+  programs.tmux = {
+    enable = true;
+    prefix = "C-a";
+    extraConfig = ''
+      bind u split-window -h   # horizontal split (side by side)
+      bind i split-window -v   # vertical split (top/bottom)
+    '';    
+  };
 }

@@ -24,7 +24,7 @@
         "sponsorBlocker@ajay.app" = {
           installation_mode = "force_installed";
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/sponsorblock/latest.xpi";
-          default_area = "menupanel"; # Moves icon to the 'puzzle' menu/tray
+          default_area = "menupanel";
         };
         # uBlock Origin - Hidden from toolbar (uBlock is built into LibreWolf/pre-installed)
         "uBlock0@raymondhill.net" = {
@@ -50,7 +50,13 @@
         "karakeep@karakeep.com" = {
           install_url = "https://addons.mozilla.org/firefox/downloads/latest/karakeep/latest.xpi";
           installation_mode = "force_installed";
-          default_area = "navbar"; # This "pins" it to the main toolbar
+          default_area = "navbar";
+        };
+        # Vimium
+        "vimium@vimium.github.io" = {
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/vimium/latest.xpi";
+          installation_mode = "force_installed";
+          default_area = "menupanel";
         };
       };
     };
