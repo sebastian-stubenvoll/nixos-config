@@ -19,6 +19,7 @@
     discord
     mumble
     
+    shotwell
     rapidraw
 
     typst
