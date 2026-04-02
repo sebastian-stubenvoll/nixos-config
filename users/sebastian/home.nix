@@ -14,6 +14,7 @@
     
     signal-desktop
     thunderbird
+    firefox
 
     steam
     discord
