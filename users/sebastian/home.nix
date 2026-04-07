@@ -8,9 +8,11 @@
   home.stateVersion = "24.05";
 
   programs.bash.enable = true;
+  fonts.fontconfig.enable = true;
 
   home.packages = with pkgs; [
     fastfetch
+    corefonts
     
     signal-desktop
     thunderbird
