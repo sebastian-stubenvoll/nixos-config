@@ -165,7 +165,7 @@
         kb_variant = "mac";
         kb_options = "caps:escape,lv3:lalt_switch,compose:menu";
         repeat_delay = 250;
-        follow_mouse = 0;
+        follow_mouse = 1;
         touchpad = {
           tap-to-click = false;
           natural_scroll = true;

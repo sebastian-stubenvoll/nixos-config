@@ -98,7 +98,7 @@
         {
           name = "typst";
           auto-format = true;
-          formatter = { command = "typstyle"; };
+          formatter = { command = "typstyle"; args = ["-l" "100" ]; };
           language-servers = [ "tinymist" ];
         }
       ];
