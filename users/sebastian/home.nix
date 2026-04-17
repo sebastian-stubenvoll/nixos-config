@@ -24,6 +24,7 @@
     
     shotwell
     rapidraw
+    art
 
     typst
     zotero
