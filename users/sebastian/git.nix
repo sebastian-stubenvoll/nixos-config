@@ -9,6 +9,7 @@
      email = "49613760+sebastian-stubenvoll@users.noreply.github.com";
     };
     init.defaultBranch = "main";
+    safe.directory = [ "/etc/nixos" ]; 
    };
  };
 }
