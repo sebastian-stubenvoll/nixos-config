@@ -24,7 +24,8 @@
     
     shotwell
     rapidraw
-    art
+    rawtherapee
+    winboat
 
     typst
     zotero
