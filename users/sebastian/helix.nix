@@ -90,7 +90,7 @@
       language-server.tinymist = {
         command = "tinymist";
         config = {
-          semanticTokens = "full";
+          semanticTokens = "enable";
         };
       };
 
@@ -98,7 +98,7 @@
         {
           name = "typst";
           auto-format = true;
-          formatter = { command = "typstyle"; args = ["-l" "100" ]; };
+          formatter = { command = "typstyle"; args = ["-l" "100" "--wrap-text" ]; };
           language-servers = [ "tinymist" ];
         }
       ];

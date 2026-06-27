@@ -13,6 +13,8 @@
   home.packages = with pkgs; [
     fastfetch
     corefonts
+
+    wiremix
     
     signal-desktop
     thunderbird
@@ -25,7 +27,7 @@
     shotwell
     rapidraw
     rawtherapee
-    winboat
+    darktable
 
     typst
     zotero

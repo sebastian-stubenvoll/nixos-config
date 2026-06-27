@@ -3,12 +3,11 @@
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs25.url = "github:nixos/nixpkgs/nixos-25.11";
+    nixpkgs25.url = "github:nixos/nixpkgs/nixos-26.05";
     nixos-hardware = {
       type = "github";
       owner = "NixOS";
       repo = "nixos-hardware";
-      rev = "31f46de4ef6675a2a1eface29f7c4c9952f2498c";
     };
     
     home-manager = {
@@ -17,9 +16,10 @@
     };
 
     hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ... }@inputs:
+  outputs = { self, nixpkgs, home-manager, agenix, ... }@inputs:
     let
       inherit (nixpkgs) lib;
 
@@ -48,6 +48,7 @@
           modules = [
             { imports = getNixFiles ./common/nixos; }
             { imports = getNixFiles (./hosts + "/${hostname}"); }
+            agenix.nixosModules.default
 
             # Home Manager Setup
             home-manager.nixosModules.home-manager

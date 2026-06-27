@@ -8,8 +8,6 @@
   home.packages = with pkgs; [
     hyprdynamicmonitors
     hyprtoolkit
-    hyprpwcenter
-    hyprpwcenter
     hyprshutdown
   ];
 

@@ -18,6 +18,10 @@
     }))
   ];
 
+  age.identityPaths= [
+    "/root/.ssh/id_ed25519"
+  ];
+  
   networking.firewall.enable = true;
   networking.networkmanager = {
     enable = true;
@@ -46,6 +50,7 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Europe/Amsterdam";
+  services.openntpd.enable = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
@@ -62,7 +67,7 @@
 
   users.users.sebastian = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "storage" ]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "storage" "docker" ]; # Enable ‘sudo’ for the user.
   };
 
   environment.systemPackages = with pkgs; [
@@ -77,7 +82,12 @@
     htop
     geteduroam
     geteduroam-cli
+    docker
+    docker-compose
+    brightnessctl
   ];
+
+  virtualisation.docker.enable = true; 
 
   services.displayManager.ly = {
     enable = true;
@@ -88,6 +98,8 @@
     withUWSM = true;
     xwayland.enable = true;
   };
+
+  
 
   # this is actually terrible
   # environment.sessionVariables.NIXOS_OZONE_WL = "1";
