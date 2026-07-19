@@ -50,7 +50,6 @@
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   time.timeZone = "Europe/Amsterdam";
-  services.openntpd.enable = true;
 
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
