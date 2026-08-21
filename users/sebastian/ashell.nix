@@ -19,7 +19,7 @@
           "MediaPlayer"
           "SystemInfo"          
           [
-            "Clock"
+            "Tempo"
             "Privacy"
             "Settings"
           ]

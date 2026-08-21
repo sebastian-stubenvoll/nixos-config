@@ -58,6 +58,12 @@
           installation_mode = "force_installed";
           default_area = "menupanel";
         };
+        # Feedbro
+        "{a9c2ad37-e940-4892-8dce-cd73c6cbbc0c}" = {
+          installation_mode = "force_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/feedbroreader/latest.xpi";
+          default_area = "navbar";
+        };
         # Zotero connector
         "zotero@chnm.gmu.edu" = {
           installation_mode = "force_installed";

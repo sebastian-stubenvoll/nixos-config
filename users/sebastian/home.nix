@@ -19,6 +19,7 @@
     signal-desktop
     thunderbird
     firefox
+    vlc
 
     steam
     discord
@@ -32,6 +33,11 @@
     typst
     zotero
   ];
+
+  programs.yazi = {
+    enable = true;
+    enableBashIntegration = true;
+  };
 
   programs.tmux = {
     enable = true;
