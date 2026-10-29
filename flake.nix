@@ -22,7 +22,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    hyprdynamicmonitors.url = "github:fiffeek/hyprdynamicmonitors";
     agenix.url = "github:ryantm/agenix";
   };
 

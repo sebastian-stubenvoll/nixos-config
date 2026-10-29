@@ -16,6 +16,10 @@
 
       # Allow extensions to control the New Tab page
       "browser.newtab.extensionControlled" = true;
+
+      # Disable the "Nova" UI redesign (browser chrome + built-in PDF viewer)
+      "browser.nova.enabled" = false;
+      "pdfjs.enableNova" = false;
     };
 
     policies = {

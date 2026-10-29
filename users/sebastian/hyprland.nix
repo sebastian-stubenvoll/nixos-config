@@ -1,65 +1,21 @@
-{ config, pkgs, inputs, ... }:
+{ config, pkgs, ... }:
 
+# Bare fallback session. Bar, wallpaper, lock/idle, monitors, notifications
+# and polkit come from the shared services in desktop.nix and friends.
+
+let
+  screenshotDir = "${config.home.homeDirectory}/Screenshots";
+in
 {
-  imports = [
-    inputs.hyprdynamicmonitors.homeManagerModules.default
-  ];
-
-  home.packages = with pkgs; [
-    hyprdynamicmonitors
-    hyprtoolkit
-    hyprshutdown
-  ];
-
-  home.hyprdynamicmonitors = {
-    enable = true;
-    installExamples = false;
-  };
-
-  services.hyprpolkitagent.enable = true;
-
-  services.hyprpaper = {
-    enable = true;
-    settings = {
-      wallpaper = [
-        {
-          monitor = "";
-          path = "/home/sebastian/wallpaper.jpg";
-          fit_mode = "fill";
-        }
-      ];
-      splash = false;
-    };
-  };
-
-  
-  home.pointerCursor = {
-    gtk.enable = true;
-    package = pkgs.adwaita-icon-theme;
-    name = "Adwaita";
-    size = 20;
-  };
-
-  programs.hyprshot = {
-    enable = true;
-    saveLocation = "${config.home.homeDirectory}/Screenshots";
-  };
-
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
+    configType = "hyprlang";
 
     settings = {
-      "$extraMod" = "Fn";
       env = [
         "XCURSOR_THEME,Adwaita"
         "XCURSOR_SIZE,20"
-      ];
-
-      # Clamshell
-      bindl = [
-        ", switch:on:Lid Switch, exec, hyprctl keyword monitor \"eDP-1, disable\""
-        ", switch:off:Lid Switch, exec, hyprctl keyword monitor \"eDP-1, 2880x1800, 0x0, 2\""
       ];
 
       bind = [
@@ -131,8 +87,8 @@
         # Disable
         "SUPER SHIFT, D, submap, disable"
 
-        # Lock
-        "SUPER SHIFT CONTROL, D, exec, hyprlock"
+        # Lock (swayidle runs swaylock on the lock event)
+        "SUPER SHIFT CONTROL, D, exec, loginctl lock-session"
 
         # Floating toggle
         "SUPER, F, togglefloating, active"
@@ -141,17 +97,19 @@
 
         # Fullscreen
         "SUPER SHIFT, M, fullscreen, 0 toggle"
-        
+
         # Launch things
         "SUPER, T, exec, kitty"
-        "CONTROL, space, exec, tofi-drun --drun-launch=true"
+        "CONTROL, space, exec, fuzzel"
+        "SUPER SHIFT, E, exec, powermenu"
         "SUPER, X, killactive,"
         "SUPER SHIFT, X, forcekillactive,"
 
         # Screenshot
-        "SUPER, S, exec, hyprshot -m region --clipboard-only"
-        "SUPER SHIFT, S, exec, hyprshot -m region -o '${builtins.toString config.programs.hyprshot.saveLocation}'"
-        "SUPER CONTROL SHIFT, S, exec, hyprshot -m monitor"
+        "SUPER, S, exec, grim -g \"$(slurp)\" - | wl-copy"
+        "SUPER SHIFT, S, exec, grim -g \"$(slurp)\" ${screenshotDir}/Screenshot-$(date +%F_%H-%M-%S).png"
+        "SUPER CONTROL SHIFT, S, exec, grim ${screenshotDir}/Screenshot-$(date +%F_%H-%M-%S).png"
+        "SUPER CONTROL, S, exec, screenshot-annotate"
       ];
 
       windowrule = [
@@ -171,7 +129,6 @@
         };
       };
       exec-once = [
-        "ashell"
         "hyprctl setcursor Adwaita 20"
       ];
 
@@ -182,7 +139,7 @@
     };
     submaps."resize".settings = {
       bind = [
-        ", escape, submap, reset"  
+        ", escape, submap, reset"
       ];
       binde = [
         ", h, resizeactive, -10 0"
@@ -193,86 +150,8 @@
     };
     submaps."disable".settings = {
       bind = [
-        "SUPER SHIFT, D, submap, reset"  
-      ];
-    };
-    extraConfig = ''
-      source = $HOME/.config/hypr/monitors.conf
-    '';
-  };
-
-  programs.hyprlock = {
-    enable = true;
-
-    settings = {
-      general = {
-        disable_loading_bar = true;
-        grace = 300;
-        hide_cursor = true;
-        no_fade_in = false;
-      };
-
-      background = [
-        {
-          path = "/home/sebastian/wallpaper.jpg";
-          blur_passes = 2;
-          blur_size = 8;
-        }
-      ];
-
-      input-field = [
-        {
-          size = "300, 50";
-          position = "0, -80";
-          monitor = "";
-          dots_center = true;
-          fade_on_empty = false;
-          font_color = "rgb(200, 200, 200)";
-          inner_color = "rgb(30, 30, 30)";
-          outer_color = "rgb(80, 80, 80)";
-          outline_thickness = 2;
-          placeholder_text = "Password...";
-          shadow_passes = 1;
-        }
-      ];
-
-      label = [
-        {
-          text = "$TIME";
-          font_size = 64;
-          position = "0, 80";
-          halign = "center";
-          valign = "center";
-        }
-
-        {
-          text = "hello $USER";
-          font_size = 20;
-          position = "0, 10";
-          halign = "center";
-          valign = "center";
-        }
+        "SUPER SHIFT, D, submap, reset"
       ];
     };
   };
-
-  services.hypridle = {
-    enable = true;
-
-    settings = {
-      general = {
-        lock_cmd = "pidof hyprlock || hyprlock";
-        before_sleep_cmd = "loginctl lock-session";
-        after_sleep_cmd = "hyprctl dispatch dpms on";
-      };
-
-      listener = [
-        {
-          timeout = 300;
-          on-timeout = "hyprlock";
-        }
-      ];
-    };
-  };
-
 }

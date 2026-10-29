@@ -98,6 +98,7 @@
     docker-compose
     brightnessctl
     xmage
+    xwayland-satellite # niri starts it on demand for X11 apps (Steam, games, ...)
   ];
 
   virtualisation.docker.enable = true; 
@@ -113,6 +114,11 @@
   };
 
   programs.niri.enable = true;
+  # swaylock needs a PAM entry to check the password
+  security.pam.services.swaylock = { };
+
+  # Polkit password dialog for both sessions
+  security.soteria.enable = true;
 
   home-manager.backupFileExtension = ".hbakcup";
   
