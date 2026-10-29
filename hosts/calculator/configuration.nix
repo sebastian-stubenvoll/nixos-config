@@ -43,6 +43,19 @@
   hardware.enableRedistributableFirmware = true;
   nixpkgs.config.allowUnfree = true;
 
+  # Build the T2 kernel from the pinned revs in flake.nix instead of current nixpkgs
+  boot.kernelPackages = lib.mkForce (
+    let kpkgs = inputs.nixpkgs-kernel.legacyPackages.${pkgs.stdenv.hostPlatform.system};
+    in kpkgs.linuxPackagesFor (
+      kpkgs.callPackage "${inputs.nixos-hardware-kernel}/apple/t2/pkgs/linux-t2" { }
+    )
+  );
+
+  # zotero still bundles Firefox ESR 140 (EOL 2026-10-13); drop once nixpkgs bumps it
+  nixpkgs.config.permittedInsecurePackages = [
+    "firefox-esr-140-bin-unwrapped-140.17.0esr"
+  ];
+
 
   systemd.targets.suspend.enable = false;
   systemd.targets.hybrid-sleep.enable = false;
@@ -84,6 +97,7 @@
     docker
     docker-compose
     brightnessctl
+    xmage
   ];
 
   virtualisation.docker.enable = true; 
@@ -98,6 +112,9 @@
     xwayland.enable = true;
   };
 
+  programs.niri.enable = true;
+
+  home-manager.backupFileExtension = ".hbakcup";
   
 
   # this is actually terrible

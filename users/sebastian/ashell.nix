@@ -26,6 +26,9 @@
           "Tray"
         ];
       };
+      workspaces = {
+        indicator_format = "NameAndIcons";
+      };
     };
   };
 }
