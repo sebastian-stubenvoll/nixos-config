@@ -10,148 +10,127 @@ in
   wayland.windowManager.hyprland = {
     enable = true;
     systemd.enable = false;
-    configType = "hyprlang";
+    configType = "lua";
 
+    # Plain options: each attribute becomes an hl.<name>(...) call.
     settings = {
       env = [
-        "XCURSOR_THEME,Adwaita"
-        "XCURSOR_SIZE,20"
+        { _args = [ "XCURSOR_THEME" "Adwaita" ]; }
+        { _args = [ "XCURSOR_SIZE" "20" ]; }
       ];
 
-      bind = [
-        # Move focus
-        "SUPER, h, movefocus, l"
-        "SUPER, j, movefocus, d"
-        "SUPER, k, movefocus, u"
-        "SUPER, l, movefocus, r"
+      config = {
+        input = {
+          kb_layout = "de";
+          kb_variant = "mac";
+          kb_options = "caps:escape,lv3:lalt_switch,compose:menu";
+          repeat_delay = 250;
+          follow_mouse = 1;
+          touchpad = {
+            tap_to_click = false;
+            natural_scroll = true;
+            clickfinger_behavior = true;
+          };
+        };
 
-        # Move windows
-        "SUPER SHIFT, h, movewindow, l"
-        "SUPER SHIFT, j, movewindow, d"
-        "SUPER SHIFT, k, movewindow, u"
-        "SUPER SHIFT, l, movewindow, r"
+        general = {
+          gaps_in = 0;
+          gaps_out = 0;
+        };
 
-        # Change workspace
-        "SUPER, f1, workspace, 1"
-        "SUPER, f2, workspace, 2"
-        "SUPER, f3, workspace, 3"
-        "SUPER, f4, workspace, 4"
-        "SUPER, f5, workspace, 5"
-        "SUPER, f6, workspace, 6"
-        "SUPER, f7, workspace, 7"
-        "SUPER, f8, workspace, 8"
-        "SUPER, f9, workspace, 9"
-
-        "SUPER SHIFT, f1, movetoworkspace, 1"
-        "SUPER SHIFT, f2, movetoworkspace, 2"
-        "SUPER SHIFT, f3, movetoworkspace, 3"
-        "SUPER SHIFT, f4, movetoworkspace, 4"
-        "SUPER SHIFT, f5, movetoworkspace, 5"
-        "SUPER SHIFT, f6, movetoworkspace, 6"
-        "SUPER SHIFT, f7, movetoworkspace, 7"
-        "SUPER SHIFT, f8, movetoworkspace, 8"
-        "SUPER SHIFT, f9, movetoworkspace, 9"
-
-        # Change workspace
-        "SUPER, 1, workspace, 1"
-        "SUPER, 2, workspace, 2"
-        "SUPER, 3, workspace, 3"
-        "SUPER, 4, workspace, 4"
-        "SUPER, 5, workspace, 5"
-        "SUPER, 6, workspace, 6"
-        "SUPER, 7, workspace, 7"
-        "SUPER, 8, workspace, 8"
-        "SUPER, 9, workspace, 9"
-
-        "SUPER SHIFT, 1, movetoworkspace, 1"
-        "SUPER SHIFT, 2, movetoworkspace, 2"
-        "SUPER SHIFT, 3, movetoworkspace, 3"
-        "SUPER SHIFT, 4, movetoworkspace, 4"
-        "SUPER SHIFT, 5, movetoworkspace, 5"
-        "SUPER SHIFT, 6, movetoworkspace, 6"
-        "SUPER SHIFT, 7, movetoworkspace, 7"
-        "SUPER SHIFT, 8, movetoworkspace, 8"
-        "SUPER SHIFT, 9, movetoworkspace, 9"
-
-        # Move active window to a monitor in the specified direction
-        "SUPER, I, movewindow, l"
-        "SUPER, O, movewindow, r"
-
-        # Move the current workspace to a monitor in the specified direction
-        "SUPER SHIFT, I, movecurrentworkspacetomonitor, l"
-        "SUPER SHIFT, O, movecurrentworkspacetomonitor, r"
-
-        # Resizing
-        "SUPER, R, submap, resize"
-
-        # Disable
-        "SUPER SHIFT, D, submap, disable"
-
-        # Lock (swayidle runs swaylock on the lock event)
-        "SUPER SHIFT CONTROL, D, exec, loginctl lock-session"
-
-        # Floating toggle
-        "SUPER, F, togglefloating, active"
-        "SUPER SHIFT, F, setfloating, active"
-        "SUPER SHIFT, F, pin, active"
-
-        # Fullscreen
-        "SUPER SHIFT, M, fullscreen, 0 toggle"
-
-        # Launch things
-        "SUPER, T, exec, kitty"
-        "CONTROL, space, exec, fuzzel"
-        "SUPER SHIFT, E, exec, powermenu"
-        "SUPER, X, killactive,"
-        "SUPER SHIFT, X, forcekillactive,"
-
-        # Screenshot
-        "SUPER, S, exec, grim -g \"$(slurp)\" - | wl-copy"
-        "SUPER SHIFT, S, exec, grim -g \"$(slurp)\" ${screenshotDir}/Screenshot-$(date +%F_%H-%M-%S).png"
-        "SUPER CONTROL SHIFT, S, exec, grim ${screenshotDir}/Screenshot-$(date +%F_%H-%M-%S).png"
-        "SUPER CONTROL, S, exec, screenshot-annotate"
-      ];
-
-      windowrule = [
-        "match:content 3, fullscreen on"
-      ];
-
-      input = {
-        kb_layout = "de";
-        kb_variant = "mac";
-        kb_options = "caps:escape,lv3:lalt_switch,compose:menu";
-        repeat_delay = 250;
-        follow_mouse = 1;
-        touchpad = {
-          tap-to-click = false;
-          natural_scroll = true;
-          clickfinger_behavior = true;
+        misc = {
+          force_default_wallpaper = 0;
+          disable_hyprland_logo = true;
+          focus_on_activate = true;
         };
       };
-      exec-once = [
-        "hyprctl setcursor Adwaita 20"
-      ];
 
-      misc = {
-        force_default_wallpaper = 0;
-        disable_hyprland_logo = true;
-      };
-    };
-    submaps."resize".settings = {
-      bind = [
-        ", escape, submap, reset"
-      ];
-      binde = [
-        ", h, resizeactive, -10 0"
-        ", j, resizeactive, 0 10"
-        ", k, resizeactive, 0 -10"
-        ", l, resizeactive, 10 0"
+      window_rule = [
+        {
+          match.content = 3;
+          fullscreen = true;
+        }
+        {
+          # Some apps (kitty) ask to open maximized; tile them normally instead
+          match.class = ".*";
+          suppress_event = "maximize";
+        }
       ];
     };
-    submaps."disable".settings = {
-      bind = [
-        "SUPER SHIFT, D, submap, reset"
-      ];
-    };
+
+    # Binds, submaps and autostart are easier to read as plain Lua.
+    extraConfig = ''
+      hl.on("hyprland.start", function()
+        hl.exec_cmd("hyprctl setcursor Adwaita 20")
+      end)
+
+      local dirs = { h = "left", j = "down", k = "up", l = "right" }
+
+      for key, dir in pairs(dirs) do
+        -- Move focus
+        hl.bind("SUPER + " .. key, hl.dsp.focus({ direction = dir }))
+        -- Move windows
+        hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ direction = dir }))
+      end
+
+      -- Change workspace (F-keys and number row)
+      for i = 1, 9 do
+        for _, key in ipairs({ "f" .. i, tostring(i) }) do
+          hl.bind("SUPER + " .. key, hl.dsp.focus({ workspace = i }))
+          hl.bind("SUPER + SHIFT + " .. key, hl.dsp.window.move({ workspace = i }))
+        end
+      end
+
+      -- Move active window to a monitor in the specified direction
+      hl.bind("SUPER + I", hl.dsp.window.move({ direction = "left" }))
+      hl.bind("SUPER + O", hl.dsp.window.move({ direction = "right" }))
+
+      -- Move the current workspace to a monitor in the specified direction
+      hl.bind("SUPER + SHIFT + I", hl.dsp.workspace.move({ monitor = "l" }))
+      hl.bind("SUPER + SHIFT + O", hl.dsp.workspace.move({ monitor = "r" }))
+
+      -- Resizing
+      hl.bind("SUPER + R", hl.dsp.submap("resize"))
+      hl.define_submap("resize", function()
+        hl.bind("escape", hl.dsp.submap("reset"))
+        hl.bind("h", hl.dsp.window.resize({ x = -10, y = 0, relative = true }), { repeating = true })
+        hl.bind("j", hl.dsp.window.resize({ x = 0, y = 10, relative = true }), { repeating = true })
+        hl.bind("k", hl.dsp.window.resize({ x = 0, y = -10, relative = true }), { repeating = true })
+        hl.bind("l", hl.dsp.window.resize({ x = 10, y = 0, relative = true }), { repeating = true })
+      end)
+
+      -- Disable all binds until pressed again
+      hl.bind("SUPER + SHIFT + D", hl.dsp.submap("disable"))
+      hl.define_submap("disable", function()
+        hl.bind("SUPER + SHIFT + D", hl.dsp.submap("reset"))
+      end)
+
+      -- Lock (swayidle runs swaylock on the lock event)
+      hl.bind("SUPER + SHIFT + CONTROL + D", hl.dsp.exec_cmd("loginctl lock-session"))
+
+      -- Floating toggle; SHIFT floats and pins
+      hl.bind("SUPER + F", hl.dsp.window.float({ action = "toggle" }))
+      hl.bind("SUPER + SHIFT + F", function()
+        hl.dispatch(hl.dsp.window.float({ action = "set" }))
+        hl.dispatch(hl.dsp.window.pin({ action = "toggle" }))
+      end)
+
+      -- Fullscreen
+      hl.bind("SUPER + SHIFT + M", hl.dsp.window.fullscreen({ mode = "fullscreen", action = "toggle" }))
+
+      -- Launch things
+      hl.bind("SUPER + T", hl.dsp.exec_cmd("kitty"))
+      hl.bind("CONTROL + space", hl.dsp.exec_cmd("tofi-drun --drun-launch=true"))
+      hl.bind("SUPER + SHIFT + E", hl.dsp.exec_cmd("powermenu"))
+      hl.bind("SUPER + X", hl.dsp.window.close())
+      hl.bind("SUPER + SHIFT + X", hl.dsp.window.kill())
+
+      -- Screenshot
+      local shotFile = "${screenshotDir}/Screenshot-$(date +%F_%H-%M-%S).png"
+      hl.bind("SUPER + S", hl.dsp.exec_cmd('grim -g "$(slurp)" - | wl-copy'))
+      hl.bind("SUPER + SHIFT + S", hl.dsp.exec_cmd('grim -g "$(slurp)" ' .. shotFile))
+      hl.bind("SUPER + CONTROL + SHIFT + S", hl.dsp.exec_cmd("grim " .. shotFile))
+      hl.bind("SUPER + CONTROL + S", hl.dsp.exec_cmd("screenshot-annotate"))
+    '';
   };
 }

@@ -12,7 +12,7 @@
       border-radius = 0;
       padding = "10";
       default-timeout = 5000;
-      icon-path = "${config.gtk.iconTheme.package}/share/icons/${config.gtk.iconTheme.name}";
+      icon-path = "${pkgs.papirus-icon-theme}/share/icons/Papirus-Dark";
 
       "urgency=high" = {
         border-color = "#d0d0d0";

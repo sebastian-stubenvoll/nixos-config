@@ -32,9 +32,9 @@
           "Tray"
         ];
       };
-      workspaces = {
-        indicator_format = "NameAndIcons";
-      };
+      # workspaces = {
+      #   indicator_format = "NameAndIcons";
+      # };
     };
   };
 }

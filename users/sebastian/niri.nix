@@ -70,6 +70,11 @@ let
         skip-at-startup
     }
 
+    // Some apps (kitty) ask to open maximized; open them as normal columns instead.
+    window-rule {
+        open-maximized-to-edges false
+    }
+
     // Steam games open fullscreen (was Hyprland's content-type rule)
     window-rule {
         match app-id=r#"^steam_app_"#
@@ -118,15 +123,15 @@ let
         // Lock
         Mod+Shift+Ctrl+D allow-inhibiting=false { spawn "loginctl" "lock-session"; }
 
-        // Floating / fullscreen
-        Mod+F { toggle-window-floating; }
-        Mod+Shift+F { move-window-to-floating; }
+        // Full width / floating / fullscreen
+        Mod+F { maximize-column; }
+        Mod+Shift+F { toggle-window-floating; }
         Mod+Shift+M { fullscreen-window; }
 
         // Apps
         Mod+T { spawn "kitty"; }
-        Ctrl+Space { spawn "fuzzel"; }
-        Mod+V { spawn-sh "${cliphist} list | fuzzel --dmenu | ${cliphist} decode | ${wl-copy}"; }
+        Ctrl+Space { spawn "tofi-drun" "--drun-launch=true"; }
+        Mod+V { spawn-sh "${cliphist} list | tofi --prompt-text \"clipboard: \" | ${cliphist} decode | ${wl-copy}"; }
         Mod+Shift+E { spawn "powermenu"; }
         Mod+X repeat=false { close-window; }
         Mod+Shift+X repeat=false { spawn-sh "kill -9 $(niri msg --json focused-window | ${jq} .pid)"; }

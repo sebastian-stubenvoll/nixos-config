@@ -11,7 +11,7 @@ let
 
   powermenu = pkgs.writeShellScriptBin "powermenu" ''
     choice=$(printf '%s\n' Lock Logout Hibernate Reboot Shutdown \
-      | ${lib.getExe pkgs.fuzzel} --dmenu --prompt "power> ")
+      | ${pkgs.tofi}/bin/tofi --prompt-text "power: ")
     case "$choice" in
       Lock)      loginctl lock-session ;;
       Logout)    loginctl terminate-session "$XDG_SESSION_ID" ;;
@@ -34,6 +34,7 @@ in
     wl-clipboard
     playerctl
     jq
+    wdisplays # GUI for one-off display layouts; kanshi re-applies profiles on hotplug
     powermenu
     annotate
   ];
@@ -134,6 +135,15 @@ in
           profile.outputs = [
             { criteria = acer; mode = "1920x1080@60Hz"; position = "0,0"; scale = 1.0; }
             { criteria = lg; mode = "1920x1080@144.001Hz"; position = "1920,0"; scale = 1.0; }
+          ];
+        }
+        {
+          # Catch-all: laptop plus any one unknown screen. Must stay last so
+          # the specific profiles above win.
+          profile.name = "anywhere";
+          profile.outputs = [
+            { criteria = laptop; status = "enable"; mode = "2880x1800"; scale = 1.5; }
+            { criteria = "*"; status = "enable"; }
           ];
         }
       ];
