@@ -98,6 +98,23 @@ in
     };
   };
 
+  # Keep the screen on while audio plays (YouTube, Jellyfin, VLC, ...).
+  # Browsers ask for this over D-Bus, which swayidle ignores; this holds a
+  # Wayland idle inhibitor instead, which swayidle does respect.
+  systemd.user.services.wayland-pipewire-idle-inhibit = {
+    Unit = {
+      Description = "Inhibit idle while audio is playing";
+      PartOf = [ "graphical-session.target" ];
+      After = [ "graphical-session.target" "pipewire.service" ];
+    };
+    Service = {
+      ExecStart = "${lib.getExe pkgs.wayland-pipewire-idle-inhibit} --quiet";
+      Restart = "on-failure";
+      RestartSec = 5;
+    };
+    Install.WantedBy = [ "graphical-session.target" ];
+  };
+
   # Monitor profiles, carried over from hyprdynamicmonitors
   services.kanshi = {
     enable = true;

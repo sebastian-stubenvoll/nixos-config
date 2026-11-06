@@ -23,10 +23,7 @@
   ];
   
   networking.firewall.enable = true;
-  networking.networkmanager = {
-    enable = true;
-    wifi.backend = "iwd";
-  };
+  # NetworkManager / DNS / captive portals: see wifi.nix
 
   hardware.graphics = {
     enable = true;            # Enable graphics support
