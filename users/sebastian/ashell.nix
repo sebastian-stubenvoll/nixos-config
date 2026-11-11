@@ -3,6 +3,11 @@
 {
   programs.ashell = {
     enable = true;
+    # nixpkgs' Rust hook now sets AWS_LC_SYS_USE_SYSTEM=1, but the ashell package
+    # doesn't provide aws-lc. Remove once fixed upstream.
+    package = pkgs.ashell.overrideAttrs (old: {
+      buildInputs = (old.buildInputs or [ ]) ++ [ pkgs.aws-lc ];
+    });
     # Started with graphical-session.target, so the bar runs in niri and Hyprland.
     systemd.enable = true;
     settings = {
